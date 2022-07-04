@@ -1,7 +1,6 @@
 export class View{
     constructor(){
         this.initializedBoard = false;
-        this.leaderBoardExists = false;
         this.createStartButton();
     }
 
@@ -52,6 +51,8 @@ export class View{
         
         table.setAttribute('id', 'gameTable');
         document.body.appendChild(table);
+
+        this.initLeaderBoard()
     }
 
     removeTable(){
@@ -60,7 +61,27 @@ export class View{
 
 
     initLeaderBoard(){
+
+
+        var leaderBoard = document.createElement('table');
+        leaderBoard.setAttribute('id', 'leaderBoard');
+
+        let titleRow = leaderBoard.insertRow(-1);
         
+        let uName = titleRow.insertCell(0);
+        uName.appendChild(document.createTextNode('Name'));
+
+        let size = titleRow.insertCell(1);
+        size.appendChild(document.createTextNode('Board Size'));
+
+        let date = titleRow.insertCell(2);
+        date.appendChild(document.createTextNode('Date'));
+
+        let timePlayed = titleRow.insertCell(3);
+        timePlayed.appendChild(document.createTextNode('Duratoin (ms)'));
+
+        document.body.appendChild(leaderBoard);
+
     }
 
 
@@ -110,7 +131,35 @@ export class View{
         }
     }
 
-    drawLeaderBoard(leaderBoard){
+    drawLeaderBoard(leaderBoardDTO){
+        document.getElementById('leaderBoard').remove()
+        this.initLeaderBoard();
+        let newTable = document.getElementById('leaderBoard')
+        leaderBoard.replaceChild()
+        for(let i = 0; i < leaderBoardDTO.length; i ++){
+            let row = leaderBoard.insertRow(-1);
+            let player = leaderBoardDTO[i];
+            let name = player.name;
+            let size = player.size;
+            let date = player.date;
+            let duration = player.duration;
+
+            row.insertCell(0);
+
+            let nameCell = titleRow.insertCell(0);
+            nameCell.appendChild(document.createTextNode(name));
+    
+            let sizeCell = titleRow.insertCell(1);
+            sizeCell.appendChild(document.createTextNode(size));
+    
+            let dateCell = titleRow.insertCell(2);
+            dateCell.appendChild(document.createTextNode(date));
+    
+            let duratoinCell = titleRow.insertCell(3);
+            duratoinCell.appendChild(document.createTextNode(duration));
+
+            
+        }
         text = document.createTextNode("Leader Board feature still does not exists")
     }
 
