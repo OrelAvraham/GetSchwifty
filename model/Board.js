@@ -23,13 +23,20 @@ export class Board{
     }
 
     get(x, y){
-        let flatIdx = y * this.boardSize + x;
-        return this.board[flatIdx];
+        if(0 <= x < this.boardSize && 0 <= y < this.boardSize){
+            let flatIdx = y * this.boardSize + x;
+            return this.board[flatIdx];
+        }
+        return undefined
+
     }
 
     set(x, y, block){
-        let flatIdx = y * this.boardSize + x;
-        this.board[flatIdx] = block;
+        if(0 <= x < this.boardSize && 0 <= y < this.boardSize){
+            let flatIdx = y * this.boardSize + x;
+            this.board[flatIdx] = block;
+        }
+        throw `Index Out of Range. Cannot get ${(x, y)} in ${this.boardSize, this.boardSize} board`;
     }
 
     countFlips(){
@@ -44,6 +51,15 @@ export class Board{
             }
         }
         return flipCount;
+    }
+
+    getEmptyBlockLoc(){
+        for(let i = 0; i < this.boardSize - 1; i++){
+            if(this.board[i].type === Blocks.BlockTypes.Empty){
+                return {row: i % this.boardSize, col: Math.floor(i / this.boardSize)}
+            }
+        }
+        return undefined
     }
 
 }
