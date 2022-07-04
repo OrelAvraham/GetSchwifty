@@ -2,6 +2,7 @@ import  * as model from '../model/model.js'
 import  * as validations from '../model/ValidationStrategies/strats.js'
 import * as generators from '../model/BoradDTOGenerators/generators.js'
 import * as views from '../view/view.js'
+import { Controller } from './controller.js';
 
 //Bootstrap
 
@@ -13,14 +14,5 @@ let initialBoard = boardOrch.getBoardDTO();
 
 let view = new views.View(initialBoard);
 
-
-function bindOnClickToSwap(x, y){
-    boardOrch.swap(x,y);
-}
-
-function bindSwapToUpdatDraw(boardDTO){
-    view.updateBoard(boardDTO);
-}
-
-view.bindOnClickCallBack(bindOnClickToSwap);
-boardOrch.bindOnSwapCallBack(bindSwapToUpdatDraw);
+let controller = new Controller(view, boardOrch);
+controller.bindAll();
