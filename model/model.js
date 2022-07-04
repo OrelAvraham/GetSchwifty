@@ -9,10 +9,11 @@ export class BoardOrchestrator{
         while(!this.validationStrategy.validate(this.board)){
             this.board.resetBoard();
         }
+
     }
 
-    bindOnSwapCallBack(callBack){
-        this.onSwapCallBack = callBack
+    bindOnBoardUpdate(callBack){
+        this.updateBoardCallBack = callBack
     }
     
     getBoardDTO(){
@@ -34,7 +35,19 @@ export class BoardOrchestrator{
             this.board.set(x, y, emptyBlock);
         }
         
-        this.onSwapCallBack(this.boardDTOGenerator.getBoardDTO(this.board))
+        this.callBackUpdateBoard();
+    }
+
+    setBoard(){
+        this.board = new Boards.Board();
+        while(!this.validationStrategy.validate(this.board)){
+            this.board.resetBoard();
+        }
+        this.callBackUpdateBoard();
+    }
+
+    callBackUpdateBoard(){
+        this.updateBoardCallBack(this.boardDTOGenerator.getBoardDTO(this.board))
     }
 
 }

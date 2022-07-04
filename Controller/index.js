@@ -22,5 +22,10 @@ function bindSwapToUpdatDraw(boardDTO){
     view.updateBoard(boardDTO);
 }
 
-view.bindOnClickCallBack(bindOnClickToSwap);
-boardOrch.bindOnSwapCallBack(bindSwapToUpdatDraw);
+function bindResetBoardButton(){
+    boardOrch.setBoard();
+}
+
+view.bindOnBlockClickCallBack(bindOnClickToSwap);
+boardOrch.bindOnBoardUpdate(bindSwapToUpdatDraw);
+view.bindOnResetClickCallBask(bindResetBoardButton);

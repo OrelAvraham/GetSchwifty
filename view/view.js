@@ -1,11 +1,16 @@
 export class View{
     constructor(startBoard){
         this.initTable(startBoard)
+        this.initResetButton()
     }
 
     
-    bindOnClickCallBack(callBack){
-        this.callBackOnClick = callBack
+    bindOnBlockClickCallBack(callBack){
+        this.callBackOnBlockClick = callBack
+    }
+
+    bindOnResetClickCallBask(callback){
+        this.callBackOnResetClick = callback
     }
 
     initTable(boardDTO){
@@ -27,7 +32,7 @@ export class View{
                 let tdText = document.createTextNode(`${ board[row * size + col] }`);
                 let td = document.createElement('td');
                 td.appendChild(tdText);
-                td.addEventListener('click', () => {this.onClick(currCol, currRow)});
+                td.addEventListener('click', () => {this.onBlockClick(currCol, currRow)});
                 td.style.width = 25;
                 td.style.height = 25;
                 tr.appendChild(td);
@@ -39,8 +44,17 @@ export class View{
         document.body.appendChild(table);
     }
 
+    initResetButton(){
+        let btn = document.createElement("button");
+        btn.innerHTML = "Reset Board";
+        btn.id = 'resetBoard'
+        btn.addEventListener('click', () => {this.onResetClick()})
+        document.body.appendChild(btn);
+    }
+
+
     updateBoard(newBoardDTO){
-        const {flatBoard: newBoard, boardSize: newSize} = newBoardDTO
+        const {flatBoard: newBoard, boardSize: newSize, win: win} = newBoardDTO
         let table = document.getElementById('gameTable');
         for(let row = 0; row < newSize; row ++){
             let tr = table.getElementsByTagName('tr')[row]
@@ -53,11 +67,19 @@ export class View{
                 td.replaceChildren(tdText)
             }
         }
+
+        if (win){
+            alert("You won the game, Press the reset button to reset the game")
+        }
     }
 
 
-    onClick(x, y){
-        this.callBackOnClick(x, y);
+    onBlockClick(x, y){
+        this.callBackOnBlockClick(x, y);
+    }
+
+    onResetClick(){
+        this.callBackOnResetClick();
     }
 
 }

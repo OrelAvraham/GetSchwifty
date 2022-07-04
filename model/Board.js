@@ -9,7 +9,7 @@ export class Board{
     resetBoard(){
 
         let flatBoard = []
-
+        
         for(let i = 1; i < this.boardSize*this.boardSize; i++){
             flatBoard.push(new Blocks.NumericBlock(i));
         }
