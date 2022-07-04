@@ -1,16 +1,25 @@
 export class View{
-    constructor(startBoard){
-        this.initTable(startBoard)
-        this.initResetButton()
+    constructor(){
+        this.initializedBoard = false;
+        this.createStartButton();
     }
 
-    
-    bindOnBlockClickCallBack(callBack){
-        this.callBackOnBlockClick = callBack
+    //Bind
+    bindClickCallBack(callBack){
+        this.callBackClick = callBack
     }
 
-    bindOnResetClickCallBask(callback){
-        this.callBackOnResetClick = callback
+    bindStartCallBack(callback){
+        this.callBackStart = callback
+    }
+
+    // Utils
+
+    createStartButton(){
+        let startButton = document.createElement('button');
+        startButton.textConten = "Start Game";
+        startButton.addEventListener('click', () => {this.onStartClick()});
+        document.body.appendChild(startButton);
     }
 
     initTable(boardDTO){
@@ -44,27 +53,38 @@ export class View{
         document.body.appendChild(table);
     }
 
-    initResetButton(){
-        let btn = document.createElement("button");
-        btn.innerHTML = "Reset Board";
-        btn.id = 'resetBoard'
-        btn.addEventListener('click', () => {this.onResetClick()})
-        document.body.appendChild(btn);
+
+    //API (?)
+
+    onBlockClick(x, y){
+        this.callBackClick(x, y);
     }
 
+    onStartClick(){
+        let uName = prompt('Enter your name');
+        let size = parseInt(prompt('Enter the wanted board size'));
+        //FIXME: use two callbacks, one to the board size and one for the user data (for 2 Models)
+        this.callBackStart({name: uName, boardSize: size});
+    }
 
-    updateBoard(newBoardDTO){
-        const {flatBoard: newBoard, boardSize: newSize, win: win} = newBoardDTO
-        let table = document.getElementById('gameTable');
-        for(let row = 0; row < newSize; row ++){
-            let tr = table.getElementsByTagName('tr')[row]
-
-            for(let col = 0; col < newSize; col++){
-                // ASSUMPTION: board contains the data to show
-                let tdText = document.createTextNode(`${ newBoard[row * newSize + col] }`);
-                let td = tr.getElementsByTagName('td')[col]
-
-                td.replaceChildren(tdText)
+    drawBoard(newBoardDTO){
+        if(!this.initializedBoard){
+            this.initializedBoard(newBoardDto);
+            this.initializedBoard = true;
+        }
+        else{
+            const {flatBoard: newBoard, boardSize: newSize, win: win} = newBoardDTO
+            let table = document.getElementById('gameTable');
+            for(let row = 0; row < newSize; row ++){
+                let tr = table.getElementsByTagName('tr')[row]
+    
+                for(let col = 0; col < newSize; col++){
+                    // ASSUMPTION: board contains the data to show
+                    let tdText = document.createTextNode(`${ newBoard[row * newSize + col] }`);
+                    let td = tr.getElementsByTagName('td')[col]
+    
+                    td.replaceChildren(tdText)
+                }
             }
         }
 
@@ -73,13 +93,9 @@ export class View{
         }
     }
 
-
-    onBlockClick(x, y){
-        this.callBackOnBlockClick(x, y);
+    drawLeaderBoard(leaderBoard){
+        text = document.createTextNode("Leader Board feature still does not exists")
     }
 
-    onResetClick(){
-        this.callBackOnResetClick();
-    }
 
 }

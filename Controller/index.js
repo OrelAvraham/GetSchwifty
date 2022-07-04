@@ -9,23 +9,23 @@ let validationStrat = new validations.ValidationStrategy();
 let boardDTOGenerator = new generators.BoardDTOGenerator();
 let boardOrch = new model.BoardOrchestrator(validationStrat, boardDTOGenerator);
 
-let initialBoard = boardOrch.getBoardDTO();
-
-let view = new views.View(initialBoard);
+let view = new views.View();
 
 
-function bindOnClickToSwap(x, y){
-    boardOrch.swap(x,y);
+function bindStartToSetBoard(startData){
+    let boardSize = startData.boardSize;
+    boardOrch.setBoard(boardSize);
 }
 
-function bindSwapToUpdatDraw(boardDTO){
-    view.updateBoard(boardDTO);
+function bindClickToSwap(x, y){
+    boardOrch.swap(x, y);
 }
 
-function bindResetBoardButton(){
-    boardOrch.setBoard();
+function bindBoardOrchToDrawBoard(boardDTO){
+    view.drawBoard(boardDTO);
 }
 
-view.bindOnBlockClickCallBack(bindOnClickToSwap);
-boardOrch.bindOnBoardUpdate(bindSwapToUpdatDraw);
-view.bindOnResetClickCallBask(bindResetBoardButton);
+view.bindStartCallBack(bindStartToSetBoard);
+view.bindClickCallBack(bindClickToSwap);
+
+boardOrch.bindOnBoardUpdate(bindBoardOrchToDrawBoard);
