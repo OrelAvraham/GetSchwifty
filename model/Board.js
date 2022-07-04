@@ -8,11 +8,12 @@ export class Board{
 
     resetBoard(){
 
-        let flatBoard = [new Blocks.Block(Blocks.BlockTypes.Empty)];
+        let flatBoard = []
 
         for(let i = 1; i < this.boardSize*this.boardSize; i++){
             flatBoard.push(new Blocks.NumericBlock(i));
         }
+        flatBoard.push(new Blocks.Block(Blocks.BlockTypes.Empty))
 
         flatBoard = flatBoard.sort(() => {
             const randomBool = Math.random() > 0.5;
@@ -56,7 +57,7 @@ export class Board{
     }
 
     getEmptyBlockLoc(){
-        for(let i = 0; i < this.board.length - 1; i++){
+        for(let i = 0; i < this.board.length; i++){
             if(this.board[i].describe() === ''){
                 return {row: i % this.boardSize, col: Math.floor(i / this.boardSize)}
             }

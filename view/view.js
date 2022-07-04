@@ -1,13 +1,17 @@
-class View{
-    constructor(callBackOnClick, startBoard){
-        this.callBackOnClick = callBackOnClick
+export class View{
+    constructor(startBoard){
         this.initTable(startBoard)
     }
 
     
-
+    bindOnClickCallBack(callBack){
+        this.callBackOnClick = callBack
+    }
 
     initTable(boardDTO){
+
+        console.log('[VIEW]', 'initializing board', boardDTO)
+
         const {flatBoard: board, boardSize: size} = boardDTO
         
         let table = document.createElement('table');
@@ -36,10 +40,8 @@ class View{
     }
 
     updateBoard(newBoardDTO){
-        console.log(newBoardDTO)
         const {flatBoard: newBoard, boardSize: newSize} = newBoardDTO
         let table = document.getElementById('gameTable');
-        console.log('update board log (new board)', newBoard)
         for(let row = 0; row < newSize; row ++){
             let tr = table.getElementsByTagName('tr')[row]
 
@@ -48,7 +50,6 @@ class View{
                 let tdText = document.createTextNode(`${ newBoard[row * newSize + col] }`);
                 let td = tr.getElementsByTagName('td')[col]
 
-                console.log('update board log (new td)', td)
                 td.replaceChildren(tdText)
             }
         }
@@ -60,32 +61,3 @@ class View{
     }
 
 }
-
-cb = function(x, y){
-    alert(`${x} ${y}`);
-}
-
-board = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-size = 4
-
-let boardDTO = {flatBoard: board, boardSize: size}
-
-
-let v = new View(cb, boardDTO);
-
-shuffle = function(){
-    let newBoardboard = board.sort(()=> {
-        const randomTrueOrFalse = Math.random() > 0.5;
-        return randomTrueOrFalse ? 1 : -1
-    })
-    console.log('Shuffle Log', newBoardboard)
-    let newboardDTO = {flatBoard: newBoardboard, boardSize: size}
-
-    v.updateBoard(newboardDTO)
-}
-
-let btn = document.createElement("button");
-btn.innerHTML = "Click Me";
-document.body.appendChild(btn);
-btn.addEventListener('click', () => shuffle())
-

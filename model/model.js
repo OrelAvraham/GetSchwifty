@@ -1,22 +1,26 @@
 import * as Boards from './Board.js'
 
-export default class BoardOrchestrator{
-    constructor(validationStrategy, boardDTOGenerator, onSwapCallBack, ctorEndCallBack){
+export class BoardOrchestrator{
+    constructor(validationStrategy, boardDTOGenerator){
         this.validationStrategy = validationStrategy
         this.board = new Boards.Board()
-        this.onSwapCallBack = onSwapCallBack;
         this.boardDTOGenerator = boardDTOGenerator;
 
         while(!this.validationStrategy.validate(this.board)){
             this.board.resetBoard();
         }
+    }
 
-        ctorEndCallBack(boardDTOGenerator.getBoardDTO(this.board))
+    bindOnSwapCallBack(callBack){
+        this.onSwapCallBack = callBack
+    }
+    
+    getBoardDTO(){
+        return this.boardDTOGenerator.getBoardDTO(this.board);
     }
 
     swap(x, y){
         let emptyLoc = this.board.getEmptyBlockLoc(); // maybe use a more generic method that returns all blocks from a type, might be a better idea
-        console.log('[MODEL]', 'Empty Loc', emptyLoc)
         let emptyX = emptyLoc.row;
         let emptyY = emptyLoc.col;
         let dist = Math.sqrt(Math.pow(x - emptyX, 2) + Math.pow(y - emptyY, 2));
@@ -32,7 +36,5 @@ export default class BoardOrchestrator{
         
         this.onSwapCallBack(this.boardDTOGenerator.getBoardDTO(this.board))
     }
-
-    checkIfWin
 
 }
