@@ -1,6 +1,7 @@
 export class View{
     constructor(){
         this.initializedBoard = false;
+        this.leaderBoardExists = false;
         this.createStartButton();
     }
 
@@ -16,10 +17,10 @@ export class View{
     // Utils
 
     createStartButton(){
-        let startButton = document.createElement('button');
-        startButton.textConten = "Start Game";
-        startButton.addEventListener('click', () => {this.onStartClick()});
-        document.body.appendChild(startButton);
+        let btn = document.createElement("button");
+        btn.innerText = "Start Game";
+        btn.addEventListener('click',() => {this.onStartClick()})
+        document.body.appendChild(btn); 
     }
 
     initTable(boardDTO){
@@ -53,6 +54,15 @@ export class View{
         document.body.appendChild(table);
     }
 
+    removeTable(){
+        document.getElementById('gameTable').remove();
+    }
+
+
+    initLeaderBoard(){
+        
+    }
+
 
     //API (?)
 
@@ -61,15 +71,19 @@ export class View{
     }
 
     onStartClick(){
-        let uName = prompt('Enter your name');
-        let size = parseInt(prompt('Enter the wanted board size'));
-        //FIXME: use two callbacks, one to the board size and one for the user data (for 2 Models)
-        this.callBackStart({name: uName, boardSize: size});
+        if(!this.initializedBoard){
+            //FIXME: learn how to use forms and stop using prompt
+            let uName = prompt('Enter your name');
+            let size = parseInt(prompt('Enter the wanted board size'));
+            //FIXME: use two callbacks, one to the board size and one for the user data (for 2 Models)
+            this.callBackStart({name: uName, boardSize: size});
+        }
     }
 
     drawBoard(newBoardDTO){
+        console.log('[VIEW]', 'given board to draw', newBoardDTO)
         if(!this.initializedBoard){
-            this.initializedBoard(newBoardDto);
+            this.initTable(newBoardDTO);
             this.initializedBoard = true;
         }
         else{
@@ -86,10 +100,13 @@ export class View{
                     td.replaceChildren(tdText)
                 }
             }
-        }
 
-        if (win){
-            alert("You won the game, Press the reset button to reset the game")
+            if (newBoardDTO.win & this.initializedBoard){
+                alert("You won the game, Press the reset button to reset the game")
+                this.initializedBoard = false;
+                this.removeTable();
+                this.onStartClick()
+            }
         }
     }
 
