@@ -1,6 +1,7 @@
-export class VaidationStrategy{
+export class ValidationStrategy{
     validate(board){
-        if(boardSize % 2 === 0){
+        let flipCount = board.countFlips();
+        if(board.boardSize % 2 === 0){
             flipCount += board.getEmptyBlockLoc().col;
             return flipCount %2 == 0;
         }
